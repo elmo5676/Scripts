@@ -42,8 +42,8 @@ public struct FM {
         return result
     }
     
-    static public func write(content: String, to: URL, withName: String) {
-        let fileName = "\(withName).swift"
+    static public func write(content: String, to: URL, namePlusExt: String) {
+        let fileName = "\(namePlusExt)"
         let path = to.appendingPathComponent(fileName)
         let contentData = Data(content.utf8)
         do {
