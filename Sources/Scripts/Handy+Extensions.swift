@@ -9,7 +9,7 @@
 import Foundation
 
 //MARK: - String Array Extensions
-extension Array where Element == String {
+public extension Array where Element == String {
     
     public func removeCarriageReturn() -> [String] {
         var result: [String] = []
@@ -27,7 +27,7 @@ extension Array where Element == String {
 }
 
 //MARK: - String Extensions
-extension String {
+public extension String {
 
     public func replaceFirst(_ number: Int, with: String) -> String {
         let range = self.index(self.startIndex, offsetBy: number)

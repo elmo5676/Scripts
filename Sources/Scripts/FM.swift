@@ -8,7 +8,7 @@
 
 import Foundation
 
-enum DocumentDirectories {
+public enum DocumentDirectories {
     case myDocs
     case dafif
     case dafifT
@@ -16,7 +16,7 @@ enum DocumentDirectories {
     case docsAppend(String)
 }
 
-struct FM {
+public struct FM {
     
     static public func getUrlPaths(of: URL) -> [URL] {
         var result: [URL] = []
