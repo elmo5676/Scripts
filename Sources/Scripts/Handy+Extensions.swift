@@ -1,4 +1,3 @@
-//
 // ********************** Handy+Extensions *********************************
 // * Copyright © 4bitCrew, LLC - All Rights Reserved
 // * Created on 3/31/20, for DAFIF_NEW_CLI
@@ -11,11 +10,11 @@ import Foundation
 //MARK: - String Array Extensions
 public extension Array where Element == String {
     
-    public func removeCarriageReturn() -> [String] {
+    func removeCarriageReturn() -> [String] {
         var result: [String] = []
         for i in self {
-            if i.contains("\r") {
-                result.append(i.replacingOccurrences(of: "\r", with: ""))
+            if i.contains("\n") {
+                result.append(i.replacingOccurrences(of: "\n", with: ""))
             } else if i.contains("\n") {
                 result.append(i.replacingOccurrences(of: "\n", with: ""))
             }else {
@@ -29,13 +28,13 @@ public extension Array where Element == String {
 //MARK: - String Extensions
 public extension String {
 
-    public func replaceFirst(_ number: Int, with: String) -> String {
+    func replaceFirst(_ number: Int, with: String) -> String {
         let range = self.index(self.startIndex, offsetBy: number)
         return self.replacingCharacters(in: self.startIndex..<range, with: with)
     }
 
     
-    public func indices(of: String) -> [Int] {
+    func indices(of: String) -> [Int] {
         var indices = [Int]()
         var position = startIndex
         while let range = range(of: of, range: position..<endIndex) {
@@ -54,14 +53,14 @@ public extension String {
         return indices
     }
 
-    public func ranges(of: String) -> [Range<String.Index>] {
+    func ranges(of: String) -> [Range<String.Index>] {
         let _indices = indices(of: of)
         let count = of.count
         return _indices.map({ index(startIndex, offsetBy: $0)..<index(startIndex, offsetBy: $0+count) })
     }
 
 
-    public func camelCased(with separator: Character) -> String {
+    func camelCased(with separator: Character) -> String {
         return self.lowercased()
             .split(separator: separator)
             .enumerated()
@@ -69,19 +68,19 @@ public extension String {
             .joined()
     }
 
-    public func capitalizingFirstLetter() -> String {
+    func capitalizingFirstLetter() -> String {
         return prefix(1).capitalized + dropFirst()
     }
 
-    mutating public func capitalizeFirstLetter() {
+    mutating func capitalizeFirstLetter() {
         self = self.capitalizingFirstLetter()
     }
 
-    public func lowerCaseFirstLetter() -> String {
+    func lowerCaseFirstLetter() -> String {
         return self.prefix(1).lowercased() + dropFirst()
     }
 
-    public func removeAllCharOf(_ str: String) -> String {
+    func removeAllCharOf(_ str: String) -> String {
         let charR = Character(str)
         var returnCharecters: [Character] = []
         for char in self {
@@ -91,13 +90,13 @@ public extension String {
         return String(returnCharecters)
     }
 
-    public func subString(from: Int, to: Int) -> String {
+    func subString(from: Int, to: Int) -> String {
         let startIndex = self.index(self.startIndex, offsetBy: from)
         let endIndex = self.index(self.startIndex, offsetBy: to)
         return String(self[startIndex...endIndex])
     }
 
-    public func subString(_ from: Int, offsetBy: Int) -> String {
+    func subString(_ from: Int, offsetBy: Int) -> String {
         let startIndex = self.index(self.startIndex, offsetBy: from)
         let endIndex = self.index(startIndex, offsetBy: offsetBy)
         return String(self[startIndex...endIndex])
