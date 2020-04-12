@@ -42,6 +42,16 @@ public struct FM {
         return result
     }
     
+    static public func write(content: Data, to: URL, namePlusExt: String) {
+        let fileName = "\(namePlusExt)"
+        let path = to.appendingPathComponent(fileName)
+        do {
+            try content.write(to: path, options: .atomic)
+        } catch {
+            print(error)
+        }
+    }
+    
     static public func write(content: String, to: URL, namePlusExt: String) {
         let fileName = "\(namePlusExt)"
         let path = to.appendingPathComponent(fileName)
@@ -52,7 +62,7 @@ public struct FM {
             print(error)
         }
     }
-
+    
     static public func workingDir(_ directory: DocumentDirectories) -> URL {
         let myDocs = (FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)).first!
         switch directory {
@@ -67,4 +77,8 @@ public struct FM {
         case .docsAppend(let str):
             return myDocs.appendingPathComponent(str)
         }}
+    
+    static public func fileUrl(_ dir: DocumentDirectories, fileName: String) -> URL {
+        workingDir(dir).appendingPathComponent(fileName)
+    }
 }
