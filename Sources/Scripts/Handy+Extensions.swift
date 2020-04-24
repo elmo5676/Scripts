@@ -8,6 +8,26 @@
 import Foundation
 
 //MARK: - String Array Extensions
+public extension Sequence where Iterator.Element == URL {
+
+    var getAllFilesInSubDirs: [URL] {
+        var files: [URL] = []
+        self.forEach { u in
+            if #available(OSX 10.11, *) {
+                guard u.hasDirectoryPath else { return files.append(u.resolvingSymlinksInPath()) }
+            } else {
+                // Fallback on earlier versions
+            }
+            guard let dir = FileManager.default.enumerator(at: u.resolvingSymlinksInPath(), includingPropertiesForKeys: nil) else { return }
+            for case let url as URL in dir {
+                files.append(url.resolvingSymlinksInPath())
+            }
+        }
+        return files
+    }
+}
+
+
 public extension Array where Element == String {
     
     func removeCarriageReturn() -> [String] {

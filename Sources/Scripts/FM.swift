@@ -7,9 +7,12 @@
 // ********************** FM *********************************
 
 import Foundation
+import Quartz
 
 public enum DocumentDirectories {
     case myDocs
+    case downloads
+    case portableCode
     case dafif
     case dafifT
     case dafifProcessing
@@ -17,6 +20,12 @@ public enum DocumentDirectories {
 }
 
 public struct FM {
+    
+    static public func getPdfContentsAsString(from: URL) -> String? {
+        let pdf = PDFDocument(url: from)
+        guard let contents = pdf?.string else { print("could not get string from pdf: \(String(describing: pdf))"); exit(1) }
+        return contents
+    }
     
     static public func getUrlPaths(of: URL) -> [URL] {
         var result: [URL] = []
@@ -68,6 +77,10 @@ public struct FM {
         switch directory {
         case .myDocs:
             return myDocs
+        case .downloads:
+            return FileManager.default.urls(for: .downloadsDirectory, in: .userDomainMask).first!
+        case .portableCode:
+            return URL(fileURLWithPath: "/Users/elmo/Dropbox/02_4BitCrew/00_CODE/04_PortableCode", isDirectory: true)
         case .dafif:
             return myDocs.appendingPathComponent("DAFIF8")
         case .dafifT:
