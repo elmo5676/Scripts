@@ -10,6 +10,7 @@ import Foundation
 import Quartz
 
 public enum DocumentDirectories {
+    case logBook
     case myDocs
     case downloads
     case portableCode
@@ -75,6 +76,9 @@ public struct FM {
     static public func workingDir(_ directory: DocumentDirectories) -> URL {
         let myDocs = (FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)).first!
         switch directory {
+        case .logBook:
+            ///Users/matthewelmore/Dropbox/01_Personal/08_Aviation/LogBookData
+            return FileManager.default.homeDirectoryForCurrentUser.appendingPathComponent("Dropbox/01_Personal/08_Aviation/LogBookData")
         case .myDocs:
             return myDocs
         case .downloads:
