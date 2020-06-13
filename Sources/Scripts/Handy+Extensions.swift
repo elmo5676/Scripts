@@ -110,16 +110,42 @@ public extension String {
         return String(returnCharecters)
     }
 
-    func subString(from: Int, to: Int) -> String {
-        let startIndex = self.index(self.startIndex, offsetBy: from)
-        let endIndex = self.index(self.startIndex, offsetBy: to)
-        return String(self[startIndex...endIndex])
-    }
+//    func subString(from: Int, to: Int) -> String {
+//        let startIndex = self.index(self.startIndex, offsetBy: from)
+//        let endIndex = self.index(self.startIndex, offsetBy: to)
+//        return String(self[startIndex...endIndex])
+//    }
+//
+//    func subString(_ from: Int, offsetBy: Int) -> String {
+//        let startIndex = self.index(self.startIndex, offsetBy: from)
+//        let endIndex = self.index(startIndex, offsetBy: offsetBy)
+//        return String(self[startIndex...endIndex])
+//    }
 
-    func subString(_ from: Int, offsetBy: Int) -> String {
-        let startIndex = self.index(self.startIndex, offsetBy: from)
-        let endIndex = self.index(startIndex, offsetBy: offsetBy)
-        return String(self[startIndex...endIndex])
-    }
+}
 
+public extension Optional where Wrapped == Any {
+    
+    var toDouble: Double {
+        switch self {
+        case .some(let val):
+            let newVal = val as? Double
+            if let newValDouble = newVal {
+                return newValDouble
+            } else {
+                return 0.0
+            }
+        case .none:
+            return 0
+        }
+    }
+    
+    var toString: String {
+        switch self {
+        case .some(let val):
+            return val as! String
+        case .none:
+            return ""
+        }
+    }
 }

@@ -10,6 +10,8 @@ import Foundation
 import Quartz
 
 public enum DocumentDirectories {
+    case dropBoxMain16
+    case dropBoxMain13
     case logBook
     case myDocs
     case downloads
@@ -22,13 +24,35 @@ public enum DocumentDirectories {
 
 public struct FM {
     
+    static public func getDataFrom(_ url: URL) -> Data? {
+        do {
+            let data = try Data(contentsOf: url, options: .mappedIfSafe)
+            return data
+        } catch {
+            print(error)
+            return nil
+        }
+    }
+
+
+    static public func getDataFrom(folder: URL, withLastComponent: String) -> Data? {
+        let folderContents = FM.getUrls(of: folder)
+        for file in folderContents {
+            if file.lastPathComponent == withLastComponent {
+                let data = getDataFrom(file)
+                return data
+            }
+        }
+        return nil
+    }
+    
     static public func getPdfContentsAsString(from: URL) -> String? {
         let pdf = PDFDocument(url: from)
         guard let contents = pdf?.string else { print("could not get string from pdf: \(String(describing: pdf))"); exit(1) }
         return contents
     }
     
-    static public func getUrlPaths(of: URL) -> [URL] {
+    static public func getUrls(of: URL) -> [URL] {
         var result: [URL] = []
         do {
             let contents = try FileManager.default.contentsOfDirectory(at: of, includingPropertiesForKeys: nil, options: [])
@@ -36,6 +60,18 @@ public struct FM {
                 let fileName = folderPath.lastPathComponent
                 if fileName.first != "." {
                     result.append(folderPath)
+                }}} catch { print(error) }
+        return result
+    }
+    
+    static public func getPaths(of: URL) -> [String] {
+        var result: [String] = []
+        do {
+            let contents = try FileManager.default.contentsOfDirectory(at: of, includingPropertiesForKeys: nil, options: [])
+            for folderPath in contents {
+                let fileName = folderPath.lastPathComponent
+                if fileName.first != "." {
+                    result.append(folderPath.path)
                 }}} catch { print(error) }
         return result
     }
@@ -74,8 +110,13 @@ public struct FM {
     }
     
     static public func workingDir(_ directory: DocumentDirectories) -> URL {
+//        /Users/elmo/Dropbox/01_Personal/02_Fitness/02_BikeAdventure/00_BikeRoute_GPX/WE_20191209/WE01
         let myDocs = (FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)).first!
         switch directory {
+        case .dropBoxMain13:
+            return URL(fileURLWithPath: "///Users/elmo/Dropbox", isDirectory: true)
+        case .dropBoxMain16:
+            return URL(fileURLWithPath: "///Users/matthewelmore/Dropbox", isDirectory: true)
         case .logBook:
             ///Users/matthewelmore/Dropbox/01_Personal/08_Aviation/LogBookData
             return FileManager.default.homeDirectoryForCurrentUser.appendingPathComponent("Dropbox/01_Personal/08_Aviation/LogBookData")
