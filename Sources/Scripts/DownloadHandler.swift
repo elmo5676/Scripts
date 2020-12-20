@@ -13,9 +13,7 @@ public struct DownloadHandler {
         let sfSymbols = URL(string: url)
         let session = URLSession(configuration: .default)
         session.dataTask(with: sfSymbols!) { (data, response, error) in
-            if let error = error {
-                print(error)
-            }
+            if let error = error { print(error) }
             guard let data = data else { return }
             completion(data)
         }.resume()
