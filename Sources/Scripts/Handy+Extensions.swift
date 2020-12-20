@@ -110,17 +110,17 @@ public extension String {
         return String(returnCharecters)
     }
 
-//    func subString(from: Int, to: Int) -> String {
-//        let startIndex = self.index(self.startIndex, offsetBy: from)
-//        let endIndex = self.index(self.startIndex, offsetBy: to)
-//        return String(self[startIndex...endIndex])
-//    }
-//
-//    func subString(_ from: Int, offsetBy: Int) -> String {
-//        let startIndex = self.index(self.startIndex, offsetBy: from)
-//        let endIndex = self.index(startIndex, offsetBy: offsetBy)
-//        return String(self[startIndex...endIndex])
-//    }
+    func subString(from: Int, to: Int) -> String {
+        let startIndex = self.index(self.startIndex, offsetBy: from)
+        let endIndex = self.index(self.startIndex, offsetBy: to)
+        return String(self[startIndex...endIndex])
+    }
+
+    func subString(_ from: Int, offsetBy: Int) -> String {
+        let startIndex = self.index(self.startIndex, offsetBy: from)
+        let endIndex = self.index(startIndex, offsetBy: offsetBy)
+        return String(self[startIndex...endIndex])
+    }
 
 }
 
