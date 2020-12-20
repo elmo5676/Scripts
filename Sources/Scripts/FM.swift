@@ -19,6 +19,7 @@ public enum DocumentDirectories {
     case dafif
     case dafifT
     case dafifProcessing
+    case homeDirectory
     case docsAppend(String)
 }
 
@@ -132,6 +133,8 @@ public struct FM {
             return myDocs.appendingPathComponent("DAFIF8/DAFIFT")
         case .dafifProcessing:
             return myDocs.appendingPathComponent("01_DafifProcessing")
+        case .homeDirectory:
+            return FileManager.default.homeDirectoryForCurrentUser
         case .docsAppend(let str):
             return myDocs.appendingPathComponent(str)
         }}
