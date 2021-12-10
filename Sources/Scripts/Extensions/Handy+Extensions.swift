@@ -96,6 +96,10 @@ public extension String {
         self = self.capitalizingFirstLetter()
     }
 
+    func capitalizeFirstLetter_() -> String {
+        return self.capitalizingFirstLetter()
+    }
+    
     func lowerCaseFirstLetter() -> String {
         return self.prefix(1).lowercased() + dropFirst()
     }
