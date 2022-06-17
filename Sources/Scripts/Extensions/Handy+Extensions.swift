@@ -53,6 +53,20 @@ public extension String {
         return self.replacingCharacters(in: self.startIndex..<range, with: with)
     }
 
+    func iterateAndReplaceOccurences(of: String, inString: String) -> String {
+        var result = inString
+        
+        let ind = self.indices(of: of)
+        var number = 1
+        
+        for _ in 0..<ind.count {
+            var tempStr = result
+            guard let range = tempStr.range(of: of) else { continue }
+            result = tempStr.replacingCharacters(in: range, with: "\(number)")
+            number += 1
+        }
+        return result
+    }
     
     func indices(of: String) -> [Int] {
         var indices = [Int]()

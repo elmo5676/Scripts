@@ -13,6 +13,7 @@ public extension String {
       guard let regex = try? NSRegularExpression(pattern: pattern, options: []) else {
         return []
       }
+        
       
       let range = NSRange(self.startIndex..., in: self)
       let matches = regex.matches(in: self, options: [], range: range)
@@ -21,6 +22,22 @@ public extension String {
         let range = Range($0.range, in: self)!
         return String(self[range])
       }
+    }
+    
+    func getFirstMatch(for pattern: String) -> String? {
+        guard let regex = try? NSRegularExpression(pattern: pattern, options: []) else {
+            return nil
+        }
+        
+        let range = NSRange(self.startIndex..., in: self)
+        let matches = regex.matches(in: self, options: [], range: range)
+        
+        var result: [String] = matches.map {
+            let range = Range($0.range, in: self)!
+            return String(self[range])
+        }
+        
+        return result[0]
     }
     
     func replaceMatches(for pattern: String, with replacementString: String) -> String? {

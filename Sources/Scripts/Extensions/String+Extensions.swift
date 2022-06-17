@@ -19,6 +19,8 @@ public extension String {
         }
     }
     
+    func split(_ by: String) -> [String] { self.components(separatedBy: by) }
+    
     ///This translates Dates from various API's into Date()
     func getDateFrom(ofType: DateFormat) -> Date? {
         let df = DateFormatter()

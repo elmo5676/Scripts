@@ -10,7 +10,7 @@ import Foundation
 import Quartz
 
 public enum DocumentDirectories {
-    case dropBoxMain16
+    case dropBox(String)
     case dropBoxMain13
     case logBook
     case myDocs
@@ -35,7 +35,6 @@ public struct FM {
         }
     }
 
-
     static public func getDataFrom(folder: URL, withLastComponent: String) -> Data? {
         let folderContents = FM.getUrls(of: folder)
         for file in folderContents {
@@ -46,13 +45,7 @@ public struct FM {
         }
         return nil
     }
-    
-    static public func getPdfContentsAsString(from: URL) -> String? {
-        let pdf = PDFDocument(url: from)
-        guard let contents = pdf?.string else { print("could not get string from pdf: \(String(describing: pdf))"); exit(1) }
-        return contents
-    }
-    
+      
     static public func getUrls(of: URL) -> [URL] {
         var result: [URL] = []
         do {
@@ -111,35 +104,58 @@ public struct FM {
     }
     
     static public func workingDir(_ directory: DocumentDirectories) -> URL {
-//        /Users/elmo/Dropbox/01_Personal/02_Fitness/02_BikeAdventure/00_BikeRoute_GPX/WE_20191209/WE01
         let myDocs = (FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)).first!
         switch directory {
-        case .dropBoxMain13:
-            return URL(fileURLWithPath: "///Users/elmo/Dropbox", isDirectory: true)
-        case .dropBoxMain16:
-            return URL(fileURLWithPath: "///Users/matthewelmore/Dropbox", isDirectory: true)
-        case .logBook:
-            ///Users/matthewelmore/Dropbox/01_Personal/08_Aviation/LogBookData
-            return FileManager.default.homeDirectoryForCurrentUser.appendingPathComponent("Dropbox/01_Personal/08_Aviation/LogBookData")
-        case .myDocs:
-            return myDocs
-        case .downloads:
-            return FileManager.default.urls(for: .downloadsDirectory, in: .userDomainMask).first!
-        case .portableCode:
-            return URL(fileURLWithPath: "/Users/elmo/Dropbox/02_4BitCrew/00_CODE/04_PortableCode", isDirectory: true)
-        case .dafif:
-            return myDocs.appendingPathComponent("DAFIF8")
-        case .dafifT:
-            return myDocs.appendingPathComponent("DAFIF8/DAFIFT")
-        case .dafifProcessing:
-            return myDocs.appendingPathComponent("01_DafifProcessing")
-        case .homeDirectory:
-            return FileManager.default.homeDirectoryForCurrentUser
-        case .docsAppend(let str):
-            return myDocs.appendingPathComponent(str)
+        case .dropBoxMain13:        return URL(fileURLWithPath: "///Users/elmo/Dropbox", isDirectory: true)
+        case .dropBox(let str):     return URL(fileURLWithPath: "///Users/matthewelmore/Dropbox", isDirectory: true).appendingPathComponent(str)
+        case .logBook:              return FileManager.default.homeDirectoryForCurrentUser.appendingPathComponent("Dropbox/01_Personal/08_Aviation/LogBookData")
+        case .myDocs:               return myDocs
+        case .downloads:            return FileManager.default.urls(for: .downloadsDirectory, in: .userDomainMask).first!
+        case .portableCode:         return URL(fileURLWithPath: "/Users/elmo/Dropbox/02_4BitCrew/00_CODE/04_PortableCode", isDirectory: true)
+        case .dafif:                return myDocs.appendingPathComponent("DAFIF8")
+        case .dafifT:               return myDocs.appendingPathComponent("DAFIF8/DAFIFT")
+        case .dafifProcessing:      return myDocs.appendingPathComponent("01_DafifProcessing")
+        case .homeDirectory:        return FileManager.default.homeDirectoryForCurrentUser
+        case .docsAppend(let str):  return myDocs.appendingPathComponent(str)
         }}
     
     static public func fileUrl(_ dir: DocumentDirectories, fileName: String) -> URL {
         workingDir(dir).appendingPathComponent(fileName)
     }
+    
+    // MARK: - 🔅 PDF Stuff
+    static public func getPdfContentsAsString(from: URL) -> String? {
+        let pdf = PDFDocument(url: from)
+        guard let contents = pdf?.string else { print("could not get string from pdf: \(String(describing: pdf))"); exit(1) }
+        return contents
+    }
+    
+    static public func getPdfPages(pdf: URL, start: Int?, numOfPages: Int?) -> String {
+        guard let start = start else { return "" }
+        guard let numOfPages = numOfPages else { return "" }
+        var result = ""
+        guard let pdf = PDFDocument(url: pdf) else { return "NONE" }
+        for i in 0..<numOfPages {
+            result += pdf.page(at: start + i)?.string ?? ""
+        }
+        return result
+    }
+    
+    static public func getPageCount(from: URL) -> Int {
+        guard let pdf = PDFDocument(url: from) else { return 0 }
+        return pdf.pageCount
+    }
+    
+    static public func getFirstPageWith(string: String, from: URL) -> Int? {
+        guard let pdf = PDFDocument(url: from) else { return nil }
+        let count = pdf.pageCount
+        for i in 0..<count {
+            let searchPage = pdf.page(at: i)?.string ?? ""
+            if searchPage.containsMatch(of: string) {
+                return i
+            }
+        }
+        return nil
+    }
+    
 }
