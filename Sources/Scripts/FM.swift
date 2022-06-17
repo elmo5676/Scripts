@@ -141,6 +141,7 @@ public struct FM {
         return result
     }
     
+    
     static public func getPageCount(from: URL) -> Int {
         guard let pdf = PDFDocument(url: from) else { return 0 }
         return pdf.pageCount
