@@ -60,7 +60,7 @@ public extension String {
         var number = 1
         
         for _ in 0..<ind.count {
-            var tempStr = result
+            let tempStr = result
             guard let range = tempStr.range(of: of) else { continue }
             result = tempStr.replacingCharacters(in: range, with: "\(number)")
             number += 1

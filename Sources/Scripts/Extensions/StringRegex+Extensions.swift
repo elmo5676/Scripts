@@ -8,6 +8,7 @@
 
 import SwiftUI
 
+@available(iOS 13.0, *)
 public extension String {
     func listMatches(for pattern: String) -> [String] {
       guard let regex = try? NSRegularExpression(pattern: pattern, options: []) else {
@@ -32,12 +33,16 @@ public extension String {
         let range = NSRange(self.startIndex..., in: self)
         let matches = regex.matches(in: self, options: [], range: range)
         
-        var result: [String] = matches.map {
+        let result: [String] = matches.map {
             let range = Range($0.range, in: self)!
             return String(self[range])
         }
+        if result.count > 0 {
+            return result[0]
+        } else {
+            return nil
+        }
         
-        return result[0]
     }
     
     func replaceMatches(for pattern: String, with replacementString: String) -> String? {
@@ -81,6 +86,7 @@ public extension String {
       
       return groupMatches
     }
+    
     
     func highlightMatches(for pattern: String) -> NSAttributedString {
       guard let regex = try? NSRegularExpression(pattern: pattern, options: []) else {

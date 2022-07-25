@@ -7,6 +7,7 @@
 
 import Foundation
 
+#if MacOS
 public struct EnumMaker {
     
     
@@ -38,3 +39,4 @@ public struct EnumMaker {
         FM.write(content: enumFileContents, to: FM.workingDir(.myDocs), namePlusExt: "\(enumName).swift")
     }
 }
+#endif

@@ -7,7 +7,8 @@
 // ********************** FM *********************************
 
 import Foundation
-import Quartz
+import PDFKit
+//import Quartz
 
 public enum DocumentDirectories {
     case dropBox(String)
@@ -23,6 +24,7 @@ public enum DocumentDirectories {
     case docsAppend(String)
 }
 
+@available(iOS 13.0, *)
 public struct FM {
     
     static public func getDataFrom(_ url: URL) -> Data? {
@@ -103,6 +105,9 @@ public struct FM {
         }
     }
     
+    
+    
+    #if os(macOS) 
     static public func workingDir(_ directory: DocumentDirectories) -> URL {
         let myDocs = (FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)).first!
         switch directory {
@@ -122,6 +127,9 @@ public struct FM {
     static public func fileUrl(_ dir: DocumentDirectories, fileName: String) -> URL {
         workingDir(dir).appendingPathComponent(fileName)
     }
+    
+    #endif
+    
     
     // MARK: - 🔅 PDF Stuff
     static public func getPdfContentsAsString(from: URL) -> String? {
