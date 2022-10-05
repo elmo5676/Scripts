@@ -10,6 +10,7 @@ import SwiftUI
 
 @available(iOS 13.0, *)
 public extension String {
+    
     func listMatches(for pattern: String) -> [String] {
       guard let regex = try? NSRegularExpression(pattern: pattern, options: []) else {
         return []
