@@ -15,7 +15,7 @@ public extension String {
         guard let regex = try? NSRegularExpression(pattern: pattern, options: []) else { return false }
         let range = NSRange(self.startIndex..., in: self)
         let matches = regex.matches(in: self, options: [], range: range)
-        return matches.isEmpty
+        return !matches.isEmpty
     }
     
     func listMatches(for pattern: String) -> [String] {
