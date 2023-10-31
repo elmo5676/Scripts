@@ -9,6 +9,7 @@
 import SwiftUI
 
 
+@available(iOS 13.0, *)
 public extension String {
     
     func containsRegex(_ pattern: String) -> Bool {
